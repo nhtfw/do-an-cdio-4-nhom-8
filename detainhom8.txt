@@ -1,0 +1,30 @@
+Nhóm 8
+Đề tài: Xây dựng website học tập trực tuyến Vlearning lấy cảm hung từ Udemy
+Tên Thành Viên: 
+------------Công nghệ----------------------
+Design: 
+- FIGMA 
+Frontend: 
+- Ngôn ngữ: javascript, 
+- Framework: TailwindCSS-SCSS, ReactJS
+- UI: ShadcnUI
+
+Backend: 
+- Ngôn ngữ: Java
+- Framework: Spring 
+- API: RESTful API, WebSocket
+- Cơ sở dữ liệu: SQL(mysql)
+- Bảo mật: Spring Security
+------------Mô tả chức năng----------------------
+Chức năng:
+-  Performance: virutalScroll (scroll tới đâu thì load dữ liệu tới đó) 
+-  Đa ngôn ngữ: English,Vietnam
+-  CRUD user
+-  Quản lý, đơn hàng 
+-  Chăm sóc khách hàng: nhắn tin realtime = websocket
+-  Thông báo thông tin về email
+Phi Chức năng:
+-  Đăng nhập bằng JWT
+-  Mã hóa mật khẩu
+-  Ghi nhớ phiên đăng nhập của người dùng đã đăng nhập
+-  ......................
