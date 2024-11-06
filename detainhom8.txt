@@ -23,8 +23,4 @@ Chức năng:
 -  Quản lý, đơn hàng 
 -  Chăm sóc khách hàng: nhắn tin realtime = websocket
 -  Thông báo thông tin về email
-Phi Chức năng:
--  Đăng nhập bằng JWT
--  Mã hóa mật khẩu
--  Ghi nhớ phiên đăng nhập của người dùng đã đăng nhập
--  ......................
+
