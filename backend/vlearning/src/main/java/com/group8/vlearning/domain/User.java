@@ -18,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
@@ -60,6 +61,16 @@ public class User {
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
     private UserProfile profile;
 
+    // những lĩnh vực người dùng quan tâm
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "users_fields", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "field_id"))
+    private List<Field> fields;
+
+    // những kĩ năng người dùng quan tâm
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "users_skills", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
+    private List<Skill> skills;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "own_courses_id", referencedColumnName = "id")
     private UserOwnCourses ownCourses;
@@ -72,18 +83,17 @@ public class User {
     @JoinColumn(name = "favorite_courses_id", referencedColumnName = "id")
     private UserFavoriteCourses favoriteCourses;
 
-    // những lĩnh vực người dùng quan tâm
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "users_fields", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "field_id"))
-    private List<Field> fields;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Comment> comments;
 
-    // những kĩ năng người dùng quan tâm
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "users_skills", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
-    private List<Skill> skills;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<CommentReaction> reactions;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<UserVoucherProgress> voucherProgresses;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<UserAchievementProgress> achievementProgresses;
 
     private boolean active;
 

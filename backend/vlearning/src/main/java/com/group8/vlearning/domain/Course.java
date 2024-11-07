@@ -75,6 +75,9 @@ public class Course {
     // @JsonIgnoreProperties(value = { "skills", "purchasedUser" })
     private List<UserFavoriteCourses> favoriteUser;
 
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
+    private List<Comment> comments;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
     private Instant createdAt;
 

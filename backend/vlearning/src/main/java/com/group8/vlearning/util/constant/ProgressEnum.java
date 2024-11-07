@@ -1,5 +1,5 @@
 package com.group8.vlearning.util.constant;
 
-public enum VoucherProgressEnum {
+public enum ProgressEnum {
     INCOMPLETE, COMPLETE, USED
 }

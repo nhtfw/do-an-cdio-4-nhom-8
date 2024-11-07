@@ -1,10 +1,6 @@
 package com.group8.vlearning.domain;
 
-import java.time.Instant;
-import java.time.LocalDate;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.group8.vlearning.util.constant.ProgressEnum;
+import com.group8.vlearning.util.constant.ReactionTypeEnum;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,7 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -22,12 +17,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "user_voucher_progress")
+@Table(name = "comment_reaction")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserVoucherProgress {
+public class CommentReaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,16 +33,9 @@ public class UserVoucherProgress {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "voucher_id")
-    private Voucher voucher;
-
-    private int progress;
+    @JoinColumn(name = "comment_id")
+    private Comment comment;
 
     @Enumerated(EnumType.STRING)
-    private ProgressEnum status;
-
-    // ngày hết hạn nếu người dùng đã nhận được
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
-    private Instant expirationDate;
-
+    private ReactionTypeEnum reactionType;
 }
