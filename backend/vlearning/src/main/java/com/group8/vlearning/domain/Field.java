@@ -13,6 +13,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -37,28 +38,15 @@ public class Field {
     @NotBlank(message = "Tên lĩnh vực không được để trống")
     private String name;
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
-    private Instant createdAt;
-
-    private String createdBy;
-
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
-    private Instant updatedAt;
-
-    private String updatedBy;
-
     private boolean active;
 
-    @PrePersist
-    public void handleBeforeCreate() {
-        this.createdBy = "";
-        // gán thời gian hiện tại
-        this.createdAt = Instant.now();
-    }
+    @OneToMany(mappedBy = "field", fetch = FetchType.LAZY)
+    private List<Course> courses;
 
-    @PreUpdate
-    public void handleBeforeUpdate() {
-        this.updatedBy = "";
-        this.updatedAt = Instant.now();
-    }
+    @OneToMany(mappedBy = "field", fetch = FetchType.LAZY)
+    @JsonIgnore
+    private List<Skill> skills;
+
+    @ManyToMany(mappedBy = "fields", fetch = FetchType.LAZY)
+    private List<User> users;
 }

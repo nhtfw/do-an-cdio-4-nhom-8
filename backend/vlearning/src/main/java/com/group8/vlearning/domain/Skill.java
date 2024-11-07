@@ -4,7 +4,7 @@ import java.time.Instant;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +15,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -54,10 +55,15 @@ public class Skill {
 
     private boolean active;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    // @JsonIgnoreProperties(value = { "jobs" })
-    @JoinTable(name = "profile_skill", joinColumns = @JoinColumn(name = "skill_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
-    private List<Skill> skills;
+    @ManyToOne
+    @JoinColumn(name = "field_id")
+    private Field field;
+
+    @ManyToMany(mappedBy = "skills", fetch = FetchType.LAZY)
+    private List<User> users;
+
+    @ManyToMany(mappedBy = "skills", fetch = FetchType.LAZY)
+    private List<Course> courses;
 
     @PrePersist
     public void handleBeforeCreate() {

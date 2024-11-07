@@ -3,8 +3,6 @@ package com.group8.vlearning.domain;
 import java.time.Instant;
 import java.util.List;
 
-import org.springframework.context.annotation.Profile;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.group8.vlearning.util.constant.RoleEnum;
@@ -52,10 +50,40 @@ public class User {
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
 
+    private String avatar;
+
+    private String background;
+
     @OneToOne(cascade = CascadeType.ALL)
     // chỉ rõ rằng cột profile_id trong bảng User trỏ đến cột id của bảng Profile
     @JoinColumn(name = "profile_id", referencedColumnName = "id")
-    private Profile profile;
+    private UserProfile profile;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "own_courses_id", referencedColumnName = "id")
+    private UserOwnCourses ownCourses;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "purchased_courses_id", referencedColumnName = "id")
+    private UserPurchasedCourses purchasedCourses;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "favorite_courses_id", referencedColumnName = "id")
+    private UserFavoriteCourses favoriteCourses;
+
+    // những lĩnh vực người dùng quan tâm
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "users_fields", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "field_id"))
+    private List<Field> fields;
+
+    // những kĩ năng người dùng quan tâm
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "users_skills", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
+    private List<Skill> skills;
+
+    private boolean active;
+
+    private boolean protect;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
     private Instant createdAt;
@@ -66,8 +94,6 @@ public class User {
     private Instant updatedAt;
 
     private String updatedBy;
-
-    private boolean active;
 
     @PrePersist
     public void handleBeforeCreate() {
