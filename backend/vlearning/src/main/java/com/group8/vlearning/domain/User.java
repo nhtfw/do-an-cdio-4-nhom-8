@@ -18,6 +18,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -81,6 +82,9 @@ public class User {
     @JoinTable(name = "users_skills", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private List<Skill> skills;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<UserVoucherProgress> voucherProgresses;
+
     private boolean active;
 
     private boolean protect;
@@ -88,23 +92,17 @@ public class User {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
     private Instant createdAt;
 
-    private String createdBy;
-
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
     private Instant updatedAt;
 
-    private String updatedBy;
-
     @PrePersist
     public void handleBeforeCreate() {
-        this.createdBy = "";
         // gán thời gian hiện tại
         this.createdAt = Instant.now();
     }
 
     @PreUpdate
     public void handleBeforeUpdate() {
-        this.updatedBy = "";
         this.updatedAt = Instant.now();
     }
 

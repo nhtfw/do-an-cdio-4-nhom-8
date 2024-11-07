@@ -1,11 +1,16 @@
 package com.group8.vlearning.domain;
 
+import java.time.Instant;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.group8.vlearning.util.constant.CourseApproveEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,6 +20,8 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -50,9 +57,15 @@ public class Course {
     @JoinTable(name = "courses_skills", joinColumns = @JoinColumn(name = "course_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private List<Skill> skills;
 
+    @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
+    private List<Chapter> chapters;
+
     @ManyToOne()
     @JoinColumn(name = "own_by")
     private UserOwnCourses ownBy;
+
+    @Enumerated(EnumType.STRING)
+    private CourseApproveEnum status;
 
     @ManyToMany(mappedBy = "purchasedCourses", fetch = FetchType.LAZY)
     // @JsonIgnoreProperties(value = { "skills", "purchasedUser" })
@@ -61,5 +74,22 @@ public class Course {
     @ManyToMany(mappedBy = "favoriteCourses", fetch = FetchType.LAZY)
     // @JsonIgnoreProperties(value = { "skills", "purchasedUser" })
     private List<UserFavoriteCourses> favoriteUser;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
+    private Instant createdAt;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
+    private Instant updatedAt;
+
+    @PrePersist
+    public void handleBeforeCreate() {
+        // gán thời gian hiện tại
+        this.createdAt = Instant.now();
+    }
+
+    @PreUpdate
+    public void handleBeforeUpdate() {
+        this.updatedAt = Instant.now();
+    }
 
 }
