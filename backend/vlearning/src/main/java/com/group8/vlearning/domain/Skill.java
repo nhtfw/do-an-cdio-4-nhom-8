@@ -46,12 +46,8 @@ public class Skill {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
     private Instant createdAt;
 
-    private String createdBy;
-
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
     private Instant updatedAt;
-
-    private String updatedBy;
 
     private boolean active;
 
@@ -67,14 +63,12 @@ public class Skill {
 
     @PrePersist
     public void handleBeforeCreate() {
-        this.createdBy = "";
         // gán thời gian hiện tại
         this.createdAt = Instant.now();
     }
 
     @PreUpdate
     public void handleBeforeUpdate() {
-        this.updatedBy = "";
         this.updatedAt = Instant.now();
     }
 

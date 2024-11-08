@@ -71,17 +71,22 @@ public class User {
     @JoinTable(name = "users_skills", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "skill_id"))
     private List<Skill> skills;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "own_courses_id", referencedColumnName = "id")
-    private UserOwnCourses ownCourses;
+    @OneToMany(mappedBy = "ownBy", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Course> ownCourses;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "purchased_courses_id", referencedColumnName = "id")
-    private UserPurchasedCourses purchasedCourses;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "purchased_courses", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+    private List<Course> purchasedCourses;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "favorite_courses_id", referencedColumnName = "id")
-    private UserFavoriteCourses favoriteCourses;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "favorite_courses", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+    private List<Course> favoriteCourses;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<UserVoucherProgress> voucherProgresses;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<UserAchievementProgress> achievementProgresses;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments;
@@ -89,11 +94,17 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<CommentReaction> reactions;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<UserVoucherProgress> voucherProgresses;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "notification_user", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "notification_id"))
+    private List<Notification> userNotifications;
 
+    // danh sách những người user đang theo dõi
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<UserAchievementProgress> achievementProgresses;
+    private List<UserFollowing> followings;
+
+    // danh sách những followers của user
+    @OneToMany(mappedBy = "userFollowing", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<UserFollowing> followers;
 
     private boolean active;
 

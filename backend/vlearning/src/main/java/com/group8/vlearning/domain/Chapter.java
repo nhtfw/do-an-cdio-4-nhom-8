@@ -36,6 +36,8 @@ public class Chapter {
     @JoinColumn(name = "course_id")
     private Course course;
 
+    private boolean active;
+
     @OneToMany(mappedBy = "chapter", fetch = FetchType.LAZY)
     private List<Lecture> lectures;
 }

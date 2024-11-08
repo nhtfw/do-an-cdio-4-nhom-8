@@ -33,6 +33,8 @@ public class Lecture {
     @NotBlank(message = "Tài liệu không được để trống")
     String file;
 
+    private boolean active;
+
     @ManyToOne
     @JoinColumn(name = "chapter_id")
     private Chapter chapter;

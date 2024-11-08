@@ -3,17 +3,20 @@ package com.group8.vlearning.domain;
 import java.time.Instant;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.annotations.ManyToAny;
 
-import jakarta.persistence.CascadeType;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.group8.vlearning.util.constant.NotificationTypeEnum;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,12 +24,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "vouchers")
+@Table(name = "notification")
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Voucher {
+public class Notification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,26 +37,20 @@ public class Voucher {
 
     private String title;
 
-    private String code;
+    private String content;
 
-    private String image;
-
-    private String description;
-
-    private Integer discountPercent;
-
-    private Integer quantity;
-
-    private boolean active;
+    @Enumerated(EnumType.STRING)
+    private NotificationTypeEnum type;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
-    private Instant endDate;
+    private Instant createdAt;
 
-    @ManyToOne
-    @JoinColumn(name = "type_id")
-    private VoucherType type;
+    @ManyToMany(mappedBy = "userNotifications", fetch = FetchType.LAZY)
+    private List<User> users;
 
-    @OneToMany(mappedBy = "voucher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<UserVoucherProgress> progresses;
-
+    @PrePersist
+    public void handleBeforeCreate() {
+        // gán thời gian hiện tại
+        this.createdAt = Instant.now();
+    }
 }

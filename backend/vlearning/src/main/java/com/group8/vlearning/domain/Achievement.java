@@ -39,6 +39,8 @@ public class Achievement {
 
     private String description;
 
+    private boolean active;
+
     @OneToMany(mappedBy = "achievement", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<UserAchievementProgress> progresses;
 

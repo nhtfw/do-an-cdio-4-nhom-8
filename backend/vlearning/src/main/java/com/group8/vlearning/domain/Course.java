@@ -62,21 +62,23 @@ public class Course {
 
     @ManyToOne()
     @JoinColumn(name = "own_by")
-    private UserOwnCourses ownBy;
+    private User ownBy;
 
     @Enumerated(EnumType.STRING)
     private CourseApproveEnum status;
 
     @ManyToMany(mappedBy = "purchasedCourses", fetch = FetchType.LAZY)
     // @JsonIgnoreProperties(value = { "skills", "purchasedUser" })
-    private List<UserPurchasedCourses> purchasedUser;
+    private List<User> purchasedUser;
 
     @ManyToMany(mappedBy = "favoriteCourses", fetch = FetchType.LAZY)
     // @JsonIgnoreProperties(value = { "skills", "purchasedUser" })
-    private List<UserFavoriteCourses> favoriteUser;
+    private List<User> favoriteUser;
 
     @OneToMany(mappedBy = "course", fetch = FetchType.LAZY)
     private List<Comment> comments;
+
+    private boolean active;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss a", timezone = "GMT+7")
     private Instant createdAt;

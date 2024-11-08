@@ -34,13 +34,15 @@ public class VoucherType {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private VoucherTypeEnum typeName;
+    private VoucherTypeEnum type;
+
+    private String value;
 
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "condition_id")
-    private VoucherCondition condition;
+    // @ManyToOne
+    // @JoinColumn(name = "condition_id")
+    // private VoucherCondition condition;
 
     @OneToMany(mappedBy = "type", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Voucher> vouchers;
